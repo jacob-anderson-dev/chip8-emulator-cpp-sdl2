@@ -1,0 +1,59 @@
+\doxysection{Platform.\+hpp}
+\hypertarget{_platform_8hpp_source}{}\label{_platform_8hpp_source}\index{include/Platform.hpp@{include/Platform.hpp}}
+\mbox{\hyperlink{_platform_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <SDL.h>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ The\ Platform\ class\ encapsulates\ the\ SDL\ window,\ OpenGL\ context,\ and\ rendering\ functionalities.}}
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_platform}{Platform}}}
+\DoxyCodeLine{00008\ \{}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{comment}{//\ Granting\ Imgui\ class\ access\ to\ private\ members\ of\ Platform.}}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_platform_a53687f7c56e8f3be08f16ee47671e6c7}{Imgui}};}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{comment}{//\ Constructor:\ Initializes\ the\ SDL\ window,\ OpenGL\ context,\ and\ textures.}}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{comment}{//\ Parameters:}}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{comment}{//\ -\/\ title:\ The\ title\ of\ the\ SDL\ window.}}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{comment}{//\ -\/\ windowWidth:\ The\ width\ of\ the\ SDL\ window.}}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{comment}{//\ -\/\ windowHeight:\ The\ height\ of\ the\ SDL\ window.}}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{comment}{//\ -\/\ textureWidth:\ The\ width\ of\ the\ texture\ used\ for\ rendering.}}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{comment}{//\ -\/\ textureHeight:\ The\ height\ of\ the\ texture\ used\ for\ rendering.}}
+\DoxyCodeLine{00020\ \ \ \ \ \mbox{\hyperlink{class_platform_aa1bbd88e163126583688668472f73b63}{Platform}}(\textcolor{keywordtype}{char}\ \textcolor{keyword}{const}*\ title,\ \textcolor{keywordtype}{int}\ windowWidth,\ \textcolor{keywordtype}{int}\ windowHeight,\ \textcolor{keywordtype}{int}\ textureWidth,\ \textcolor{keywordtype}{int}\ textureHeight);}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{comment}{//\ Destructor:\ Cleans\ up\ and\ releases\ SDL\ resources.}}
+\DoxyCodeLine{00023\ \ \ \ \ \mbox{\hyperlink{class_platform_a13b5e4ef946b8a2fe38d22014145ab68}{\string~Platform}}();}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{comment}{//\ Updates\ the\ texture\ with\ new\ pixel\ data.}}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{comment}{//\ Parameters:}}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{comment}{//\ -\/\ buffer:\ Pointer\ to\ the\ pixel\ data.}}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{comment}{//\ -\/\ pitch:\ The\ number\ of\ bytes\ in\ a\ row\ of\ pixel\ data.}}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_platform_a42a964cfa203c5635a07d9ecb8fec464}{Update}}(\textcolor{keywordtype}{void}\ \textcolor{keyword}{const}*\ buffer,\ \textcolor{keywordtype}{int}\ pitch);}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{comment}{//\ Processes\ input\ events\ and\ updates\ the\ state\ of\ the\ keys.}}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\ Parameters:}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{comment}{//\ -\/\ keys:\ Pointer\ to\ an\ array\ representing\ the\ state\ of\ the\ keys.}}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{comment}{//\ Returns:}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{comment}{//\ -\/\ true\ if\ the\ application\ should\ continue\ running,\ false\ if\ it\ should\ quit.}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_platform_ace6ed416cf20d95bf20e7b3fb5106bf9}{ProcessInput}}(uint8\_t*\ keys);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{comment}{//\ Pointer\ to\ the\ SDL\ window.}}
+\DoxyCodeLine{00040\ \ \ \ \ SDL\_Window*\ window\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{comment}{//\ Handle\ to\ the\ OpenGL\ context.}}
+\DoxyCodeLine{00043\ \ \ \ \ SDL\_GLContext\ gl\_context\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{comment}{//\ Pointer\ to\ the\ SDL\ texture\ used\ as\ a\ framebuffer.}}
+\DoxyCodeLine{00046\ \ \ \ \ SDL\_Texture*\ framebuffer\_texture\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{comment}{//\ Pointer\ to\ the\ SDL\ renderer.}}
+\DoxyCodeLine{00049\ \ \ \ \ SDL\_Renderer*\ renderer\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{comment}{//\ Pointer\ to\ the\ SDL\ texture\ used\ for\ rendering.}}
+\DoxyCodeLine{00052\ \ \ \ \ SDL\_Texture*\ texture\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00053\ \};}
+
+\end{DoxyCode}

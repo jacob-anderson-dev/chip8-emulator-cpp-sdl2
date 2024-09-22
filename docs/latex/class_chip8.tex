@@ -1,0 +1,86 @@
+\doxysection{Chip8 Class Reference}
+\hypertarget{class_chip8}{}\label{class_chip8}\index{Chip8@{Chip8}}
+
+
+{\ttfamily \#include $<$Chip8.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_chip8_a6d72f2cd7b791e0da2b66e3f9dc2b751}{Chip8}} ()
+\begin{DoxyCompactList}\small\item\em Constructs a new \doxylink{class_chip8}{Chip8} object and initializes its state. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_chip8_a56d6e56ac1c44143b1ae398a12527ef5}{Load\+ROM}} (const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Loads a ROM file into the CHIP-\/8 memory. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_chip8_a1ca55fd6f6711204240c85f9cd697956}{Cycle}} ()
+\begin{DoxyCompactList}\small\item\em Executes one cycle of the CHIP-\/8 CPU. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::array$<$ uint8\+\_\+t, \mbox{\hyperlink{_chip8_8hpp_a28382780aa9490d6c5872ddd5d8ba7cd}{KEY\+\_\+\+COUNT}} $>$ \mbox{\hyperlink{class_chip8_a1f888fa7c02720856cef3a2f56f69727}{keypad}} \{\}
+\item 
+std\+::array$<$ uint32\+\_\+t, \mbox{\hyperlink{_chip8_8hpp_a0898a7e16b518c0c9f80344459d428e4}{VIDEO\+\_\+\+WIDTH}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{_chip8_8hpp_af3f34277a3c8855a5b655957c8359bae}{VIDEO\+\_\+\+HEIGHT}} $>$ \mbox{\hyperlink{class_chip8_a2cc4c62707a3edfc14979a29d0f59935}{video}} \{\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_chip8_a6d72f2cd7b791e0da2b66e3f9dc2b751}\index{Chip8@{Chip8}!Chip8@{Chip8}}
+\index{Chip8@{Chip8}!Chip8@{Chip8}}
+\doxysubsubsection{\texorpdfstring{Chip8()}{Chip8()}}
+{\footnotesize\ttfamily \label{class_chip8_a6d72f2cd7b791e0da2b66e3f9dc2b751} 
+Chip8\+::\+Chip8 (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Constructs a new \doxylink{class_chip8}{Chip8} object and initializes its state. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_chip8_a1ca55fd6f6711204240c85f9cd697956}\index{Chip8@{Chip8}!Cycle@{Cycle}}
+\index{Cycle@{Cycle}!Chip8@{Chip8}}
+\doxysubsubsection{\texorpdfstring{Cycle()}{Cycle()}}
+{\footnotesize\ttfamily \label{class_chip8_a1ca55fd6f6711204240c85f9cd697956} 
+void Chip8\+::\+Cycle (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Executes one cycle of the CHIP-\/8 CPU. 
+
+Executes one cycle of the CHIP-\/8 CPU. \Hypertarget{class_chip8_a56d6e56ac1c44143b1ae398a12527ef5}\index{Chip8@{Chip8}!LoadROM@{LoadROM}}
+\index{LoadROM@{LoadROM}!Chip8@{Chip8}}
+\doxysubsubsection{\texorpdfstring{LoadROM()}{LoadROM()}}
+{\footnotesize\ttfamily \label{class_chip8_a56d6e56ac1c44143b1ae398a12527ef5} 
+void Chip8\+::\+Load\+ROM (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename}{}\end{DoxyParamCaption})}
+
+
+
+Loads a ROM file into the CHIP-\/8 memory. 
+
+Loads a ROM file into the CHIP-\/8 memory. 
+\begin{DoxyParams}{Parameters}
+{\em filename} & The path to the ROM file.\\
+\hline
+{\em filename} & The path to the ROM file. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_chip8_a1f888fa7c02720856cef3a2f56f69727}\index{Chip8@{Chip8}!keypad@{keypad}}
+\index{keypad@{keypad}!Chip8@{Chip8}}
+\doxysubsubsection{\texorpdfstring{keypad}{keypad}}
+{\footnotesize\ttfamily \label{class_chip8_a1f888fa7c02720856cef3a2f56f69727} 
+std\+::array$<$uint8\+\_\+t, \mbox{\hyperlink{_chip8_8hpp_a28382780aa9490d6c5872ddd5d8ba7cd}{KEY\+\_\+\+COUNT}}$>$ Chip8\+::keypad \{\}}
+
+\Hypertarget{class_chip8_a2cc4c62707a3edfc14979a29d0f59935}\index{Chip8@{Chip8}!video@{video}}
+\index{video@{video}!Chip8@{Chip8}}
+\doxysubsubsection{\texorpdfstring{video}{video}}
+{\footnotesize\ttfamily \label{class_chip8_a2cc4c62707a3edfc14979a29d0f59935} 
+std\+::array$<$uint32\+\_\+t, \mbox{\hyperlink{_chip8_8hpp_a0898a7e16b518c0c9f80344459d428e4}{VIDEO\+\_\+\+WIDTH}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{_chip8_8hpp_af3f34277a3c8855a5b655957c8359bae}{VIDEO\+\_\+\+HEIGHT}}$>$ Chip8\+::video \{\}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{_chip8_8hpp}{Chip8.\+hpp}}\item 
+src/\mbox{\hyperlink{_chip8_8cpp}{Chip8.\+cpp}}\end{DoxyCompactItemize}

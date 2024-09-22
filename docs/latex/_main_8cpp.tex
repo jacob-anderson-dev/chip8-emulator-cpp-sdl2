@@ -1,0 +1,37 @@
+\doxysection{src/\+Main.cpp File Reference}
+\hypertarget{_main_8cpp}{}\label{_main_8cpp}\index{src/Main.cpp@{src/Main.cpp}}
+{\ttfamily \#include "{}../include/\+Chip8.\+hpp"{}}\newline
+{\ttfamily \#include "{}../include/\+Platform.\+hpp"{}}\newline
+{\ttfamily \#include $<$chrono$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$cstdlib$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{_main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int argc, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}argv)
+\begin{DoxyCompactList}\small\item\em Entry point for the CHIP-\/8 emulator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{_main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\index{Main.cpp@{Main.cpp}!main@{main}}
+\index{main@{main}!Main.cpp@{Main.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily \label{_main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627} 
+int main (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{argv}{}\end{DoxyParamCaption})}
+
+
+
+Entry point for the CHIP-\/8 emulator. 
+
+This function initializes the emulator, processes command-\/line arguments, sets up the platform window and CHIP-\/8 instance, and runs the main emulation loop.
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & The number of command-\/line arguments. \\
+\hline
+{\em argv} & The array of command-\/line arguments. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Returns EXIT\+\_\+\+SUCCESS on successful execution, or EXIT\+\_\+\+FAILURE on error. 
+\end{DoxyReturn}

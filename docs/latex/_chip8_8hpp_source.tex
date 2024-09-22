@@ -1,0 +1,118 @@
+\doxysection{Chip8.\+hpp}
+\hypertarget{_chip8_8hpp_source}{}\label{_chip8_8hpp_source}\index{include/Chip8.hpp@{include/Chip8.hpp}}
+\mbox{\hyperlink{_chip8_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <array>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <random>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Constants\ defining\ the\ CHIP-\/8\ specifications}}
+\DoxyCodeLine{00008\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{_chip8_8hpp_a28382780aa9490d6c5872ddd5d8ba7cd}{KEY\_COUNT}}\ \ \ \ \ \ \ \ =\ 16;\ \ \ \ \textcolor{comment}{//\ Number\ of\ keys\ in\ the\ CHIP-\/8\ keypad}}
+\DoxyCodeLine{00009\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{_chip8_8hpp_a85c77d0e20ac45126b6c82907805ba97}{MEMORY\_SIZE}}\ \ \ \ \ \ =\ 4096;\ \ \textcolor{comment}{//\ Size\ of\ the\ CHIP-\/8\ memory}}
+\DoxyCodeLine{00010\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{_chip8_8hpp_a42e81b41f7fdbc58b3e06b10db12325f}{REGISTER\_COUNT}}\ \ \ =\ 16;\ \ \ \ \textcolor{comment}{//\ Number\ of\ registers\ in\ the\ CHIP-\/8}}
+\DoxyCodeLine{00011\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{_chip8_8hpp_a8123dbc57dcafe3b9fab7786f9e37ac8}{STACK\_LEVELS}}\ \ \ \ \ =\ 16;\ \ \ \ \textcolor{comment}{//\ Number\ of\ stack\ levels\ in\ the\ CHIP-\/8}}
+\DoxyCodeLine{00012\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{_chip8_8hpp_af3f34277a3c8855a5b655957c8359bae}{VIDEO\_HEIGHT}}\ \ \ \ \ =\ 32;\ \ \ \ \textcolor{comment}{//\ Height\ of\ the\ CHIP-\/8\ display}}
+\DoxyCodeLine{00013\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{_chip8_8hpp_a0898a7e16b518c0c9f80344459d428e4}{VIDEO\_WIDTH}}\ \ \ \ \ \ =\ 64;\ \ \ \ \textcolor{comment}{//\ Width\ of\ the\ CHIP-\/8\ display}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_chip8}{Chip8}}}
+\DoxyCodeLine{00016\ \{}
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ \ \ \mbox{\hyperlink{class_chip8_a6d72f2cd7b791e0da2b66e3f9dc2b751}{Chip8}}();}
+\DoxyCodeLine{00019\ \ \ \ \ }
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_chip8_a56d6e56ac1c44143b1ae398a12527ef5}{LoadROM}}(\textcolor{keyword}{const}\ std::string\&\ filename);}
+\DoxyCodeLine{00025\ \ \ \ \ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_chip8_a1ca55fd6f6711204240c85f9cd697956}{Cycle}}();}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{comment}{//\ CHIP-\/8\ keypad\ state}}
+\DoxyCodeLine{00032\ \ \ \ \ std::array<uint8\_t,\ KEY\_COUNT>\ \mbox{\hyperlink{class_chip8_a1f888fa7c02720856cef3a2f56f69727}{keypad}}\{\};}
+\DoxyCodeLine{00033\ \ \ \ \ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{comment}{//\ CHIP-\/8\ video\ memory\ (display)}}
+\DoxyCodeLine{00035\ \ \ \ \ std::array<uint32\_t,\ VIDEO\_WIDTH\ *\ VIDEO\_HEIGHT>\ \mbox{\hyperlink{class_chip8_a2cc4c62707a3edfc14979a29d0f59935}{video}}\{\};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{comment}{//\ Function\ tables\ for\ opcode\ handling}}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{void}\ Table0();}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{void}\ Table8();}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ TableE();}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{void}\ TableF();}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{comment}{//\ Opcode\ implementations}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_NULL();\ \ \ \ \textcolor{comment}{//\ Do\ nothing}}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_00E0();\ \ \ \ \textcolor{comment}{//\ Clear\ the\ display}}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_00EE();\ \ \ \ \textcolor{comment}{//\ Return\ from\ a\ subroutine}}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_1nnn();\ \ \ \ \textcolor{comment}{//\ Jump\ to\ address\ nnn}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_2nnn();\ \ \ \ \textcolor{comment}{//\ Call\ subroutine\ at\ nnn}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_3xkk();\ \ \ \ \textcolor{comment}{//\ Skip\ next\ instruction\ if\ Vx\ ==\ kk}}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_4xkk();\ \ \ \ \textcolor{comment}{//\ Skip\ next\ instruction\ if\ Vx\ !=\ kk}}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_5xy0();\ \ \ \ \textcolor{comment}{//\ Skip\ next\ instruction\ if\ Vx\ ==\ Vy}}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_6xkk();\ \ \ \ \textcolor{comment}{//\ Set\ Vx\ =\ kk}}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_7xkk();\ \ \ \ \textcolor{comment}{//\ Set\ Vx\ =\ Vx\ +\ kk}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_8xy0();\ \ \ \ \textcolor{comment}{//\ Set\ Vx\ =\ Vy}}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_8xy1();\ \ \ \ \textcolor{comment}{//\ Set\ Vx\ =\ Vx\ OR\ Vy}}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_8xy2();\ \ \ \ \textcolor{comment}{//\ Set\ Vx\ =\ Vx\ AND\ Vy}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_8xy3();\ \ \ \ \textcolor{comment}{//\ Set\ Vx\ =\ Vx\ XOR\ Vy}}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_8xy4();\ \ \ \ \textcolor{comment}{//\ Set\ Vx\ =\ Vx\ +\ Vy,\ set\ VF\ =\ carry}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_8xy5();\ \ \ \ \textcolor{comment}{//\ Set\ Vx\ =\ Vx\ -\/\ Vy,\ set\ VF\ =\ NOT\ borrow}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_8xy6();\ \ \ \ \textcolor{comment}{//\ Set\ Vx\ =\ Vx\ SHR\ 1}}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_8xy7();\ \ \ \ \textcolor{comment}{//\ Set\ Vx\ =\ Vy\ -\/\ Vx,\ set\ VF\ =\ NOT\ borrow}}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_8xyE();\ \ \ \ \textcolor{comment}{//\ Set\ Vx\ =\ Vx\ SHL\ 1}}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_9xy0();\ \ \ \ \textcolor{comment}{//\ Skip\ next\ instruction\ if\ Vx\ !=\ Vy}}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_Annn();\ \ \ \ \textcolor{comment}{//\ Set\ I\ =\ nnn}}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_Bnnn();\ \ \ \ \textcolor{comment}{//\ Jump\ to\ location\ nnn\ +\ V0}}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_Cxkk();\ \ \ \ \textcolor{comment}{//\ Set\ Vx\ =\ random\ byte\ AND\ kk}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_Dxyn();\ \ \ \ \textcolor{comment}{//\ Display\ n-\/byte\ sprite\ starting\ at\ memory\ location\ I\ at\ (Vx,\ Vy),\ set\ VF\ =\ collision}}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_Ex9E();\ \ \ \ \textcolor{comment}{//\ Skip\ next\ instruction\ if\ key\ with\ the\ value\ of\ Vx\ is\ pressed}}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_ExA1();\ \ \ \ \textcolor{comment}{//\ Skip\ next\ instruction\ if\ key\ with\ the\ value\ of\ Vx\ is\ not\ pressed}}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_Fx07();\ \ \ \ \textcolor{comment}{//\ Set\ Vx\ =\ delay\ timer\ value}}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_Fx0A();\ \ \ \ \textcolor{comment}{//\ Wait\ for\ a\ key\ press,\ store\ the\ value\ of\ the\ key\ in\ Vx}}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_Fx15();\ \ \ \ \textcolor{comment}{//\ Set\ delay\ timer\ =\ Vx}}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_Fx18();\ \ \ \ \textcolor{comment}{//\ Set\ sound\ timer\ =\ Vx}}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_Fx1E();\ \ \ \ \textcolor{comment}{//\ Set\ I\ =\ I\ +\ Vx}}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_Fx29();\ \ \ \ \textcolor{comment}{//\ Set\ I\ =\ location\ of\ sprite\ for\ digit\ Vx}}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_Fx33();\ \ \ \ \textcolor{comment}{//\ Store\ BCD\ representation\ of\ Vx\ in\ memory\ locations\ I,\ I+1,\ and\ I+2}}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_Fx55();\ \ \ \ \textcolor{comment}{//\ Store\ registers\ V0\ through\ Vx\ in\ memory\ starting\ at\ location\ I}}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{void}\ OP\_Fx65();\ \ \ \ \textcolor{comment}{//\ Read\ registers\ V0\ through\ Vx\ from\ memory\ starting\ at\ location\ I}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{comment}{//\ CHIP-\/8\ memory}}
+\DoxyCodeLine{00082\ \ \ \ \ std::array<uint8\_t,\ MEMORY\_SIZE>\ memory\{\};}
+\DoxyCodeLine{00083\ \ \ \ \ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{comment}{//\ CHIP-\/8\ registers}}
+\DoxyCodeLine{00085\ \ \ \ \ std::array<uint8\_t,\ REGISTER\_COUNT>\ registers\{\};}
+\DoxyCodeLine{00086\ \ \ \ \ }
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{comment}{//\ Delay\ timer}}
+\DoxyCodeLine{00088\ \ \ \ \ uint8\_t\ delayTimer\{\};}
+\DoxyCodeLine{00089\ \ \ \ \ }
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{comment}{//\ Sound\ timer}}
+\DoxyCodeLine{00091\ \ \ \ \ uint8\_t\ soundTimer\{\};}
+\DoxyCodeLine{00092\ \ \ \ \ }
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{comment}{//\ Stack\ pointer}}
+\DoxyCodeLine{00094\ \ \ \ \ uint8\_t\ sp\{\};}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{comment}{//\ CHIP-\/8\ stack}}
+\DoxyCodeLine{00097\ \ \ \ \ std::array<uint16\_t,\ STACK\_LEVELS>\ stack\{\};}
+\DoxyCodeLine{00098\ \ \ \ \ }
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{comment}{//\ Index\ register}}
+\DoxyCodeLine{00100\ \ \ \ \ uint16\_t\ index\{\};}
+\DoxyCodeLine{00101\ \ \ \ \ }
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{comment}{//\ Program\ counter}}
+\DoxyCodeLine{00103\ \ \ \ \ uint16\_t\ pc\{\};}
+\DoxyCodeLine{00104\ \ \ \ \ }
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{comment}{//\ Current\ opcode}}
+\DoxyCodeLine{00106\ \ \ \ \ uint16\_t\ opcode\{\};}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{comment}{//\ Random\ number\ generator}}
+\DoxyCodeLine{00109\ \ \ \ \ std::default\_random\_engine\ randGen;}
+\DoxyCodeLine{00110\ \ \ \ \ std::uniform\_int\_distribution<uint8\_t>\ randByte;}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{comment}{//\ Function\ pointers\ for\ opcode\ handling}}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keyword}{using\ }Chip8Func\ =\ void\ (\mbox{\hyperlink{class_chip8}{Chip8}}::*)();}
+\DoxyCodeLine{00114\ \ \ \ \ std::array<Chip8Func,\ 0xF\ +\ 1>\ table;}
+\DoxyCodeLine{00115\ \ \ \ \ std::array<Chip8Func,\ 0xE\ +\ 1>\ table0;}
+\DoxyCodeLine{00116\ \ \ \ \ std::array<Chip8Func,\ 0xE\ +\ 1>\ table8;}
+\DoxyCodeLine{00117\ \ \ \ \ std::array<Chip8Func,\ 0xE\ +\ 1>\ tableE;}
+\DoxyCodeLine{00118\ \ \ \ \ std::array<Chip8Func,\ 0x65\ +\ 1>\ tableF;}
+\DoxyCodeLine{00119\ \};}
+
+\end{DoxyCode}

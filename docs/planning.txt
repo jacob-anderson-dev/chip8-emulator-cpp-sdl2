@@ -1,0 +1,288 @@
+CHIP-8 Description:
+    16 8 bit registers
+        labeled V0 - VF.
+        VF is used as flag register.
+    4K (4096) bytes of memory
+        addressed by 3 nibbles.
+        segmented into 3 sections
+            0x000 - 0x1FF
+                reserved for chip 8 interpreter.
+            0x050 - 0x0A0
+                16 built in font characters.
+            0x200 - 0xFFF
+                instructions from ROM.
+                anything left is free use.
+    16 bit index register
+        used to store memory addresses for certain operations.
+    16 bit program counter
+        holds address of next instruction to execute.
+        each instruction is 2 bytes.
+        for each fetch, get @PC and @PC + 1, then combine to one 16 bit value.
+        increment PC by 2.
+    16 level stack
+        can hold 16 different PCs.
+    8 bit stack pointer
+        when pop, do not delete, just copy value and update SP.
+        each CALL
+            @SP := PC
+            increment SP
+        each RETURN
+            decrement SP
+            PC := @SP
+    8 bit delay timer
+        if @DT = 0, @DT stays 0
+        if @DT = anything, decrement @DT @ cycle_clock_rate
+    8 bit sound timer
+        same as DT,
+        when ST /= 0, play sound
+    16 input keys
+        0x0 - 0xF.
+        either pressed or not pressed.
+            1 2 3 C
+            4 5 6 D
+            7 8 9 E
+            A 0 B F
+    64 X 32 monochrome display memory
+        memory buffer to store graphics for display.
+        each pixel is either on or off.
+        draw instruction:
+            iterate over each pixel in a sprite
+            XORs sprite pixel with display pixel (if screen is all black, while show white, vice versa).
+        must wrap at screen edge.
+
+Summary:
+    registers       : natural_8     [16]        ;
+    memory          : natural_8     [4096]      ;
+    index           : natural_16                ;
+    program_counter : natural_16                ;
+    stack           : natural_16    [16]        ;
+    stack_pointer   : natural_8                 ;
+    delay_timer     : natural_8                 ;
+    sound_timer     : natural_8                 ;
+    <!-- keypad          : natural_1     [16]        ; -->
+    <!-- video           : natural_1     [64 * 32]   ; -->
+    keypad          : natural_8     [16]        ;
+    video           : natural_8     [64 * 32]   ;
+    opcode          : natural_16                ;
+    font            : natural_8     [5 * 16]    ;
+    random_byte     : natural_8                 ;
+
+Problems:
+    load rom -> different in each language
+        read in file / open file.
+        read each byte of file into memory array starting @ 0x200.
+    load fonts
+        characters are sprites.
+        5 bytes.
+        the letter F is: 0xF0, 0x80, 0xF0, 0x80, 0x80
+        1 1 1 1 0 0 0 0
+        1 0 0 0 0 0 0 0
+        1 1 1 1 0 0 0 0
+        1 0 0 0 0 0 0 0
+        1 0 0 0 0 0 0 0
+        draws an 'F' shape with 1s.
+        16 characters means we have an array of 80 bytes.
+        load all bytes into memory starting @ 0x050.
+    random number generator
+        just use ADA 95 built in RNG on random_byte.
+    instructions
+        00E0 - CLS
+            -- clear display.alr
+            -- set memory array all to 0.
+        00EE - RET
+            -- return from a subroutine.
+            stack_pointer := stack_pointer - 1;
+            program_counter := stack[stack_pointer];
+        1nnn - JP addr
+            -- jump to location 0xnnn.
+            program_counter := nnn;
+        2nnn - CALL addr
+            -- call subroutine @ 0xnnn.
+            stack[stack_pointer] := program_counter;
+            stack_pointer := stack_pointer + 1;
+            program_counter := 0xnnn;
+        3xkk - SE Vx, byte
+            -- skip next instruction if Vx = kk.
+            if (registers[x] = kk) 
+                program_counter := program_counter +  2;
+        4xkk - SNE Vx, byte
+            -- skip next instruction if Vx /= kk.
+            if (registers[x] /= kk) 
+                program_counter := program_counter +  2;
+        5xy0 - SE Vx, Vy
+            -- skip next instruction if Vx = Vy.
+            if (registers[x] = registers[y]) 
+                program_counter := program_counter +  2;
+        6xkk - LD Vx, byte
+            -- set Vx = kk.
+            registers[x] := kk;
+        7xkk - ADD Vx, byte
+            -- set Vx = Vx + kk.
+            registers[x] := registers[x] + kk;
+        8xy0 - LD Vx, Vy
+            -- set Vx = Vy.
+            registers[x] := registers[y];
+        8xy1 - OR Vx, Vy
+            -- set Vx = Vx OR Vy.
+            registers[x] := registers[x] | registers[y]
+        8xy2 - AND Vx, Vy
+            -- set Vx = Vx AND Vy.
+            registers[x] := registers[x] & registers[y]
+        8xy3 - XOR Vx, Vy
+            -- set Vx = Vx XOR Vy.
+            registers[x] := registers[x] ^ registers[y]
+        8xy4 - ADD Vx, Vy
+            -- set Vx = Vx + Vy.
+            -- set Vf = carry.
+            sum := registers[x] + registers[y];
+            if (sum > natural_8.size)
+                registers[0xF] := 1;
+            else
+                registers[0xF] := 0;
+            registers[x] := natural_8(sum);
+        8xy5 - SUB Vx, Vy
+            -- Set Vx = Vx - Vy, set VF = NOT borrow.
+            -- If Vx > Vy, then VF is set to 1, otherwise 0. Then Vy is subtracted from Vx, and the results stored in Vx.
+            if (registers[x] > registers[y])
+                registers[0xF] := 1;
+            else
+                registers[0xF] := 0;
+            registers[x] := registers[x] - registers[y];
+        8xy6 - SHR Vx
+            -- Set Vx = Vx SHR 1.
+            -- If the least-significant bit of Vx is 1, then VF is set to 1, otherwise 0. Then Vx is divided by 2.
+            -- Save LSB in VF
+            registers[0xF] := natural_1(registers[x]);
+            registers[x] := registers[x] >> 1;
+        8xy7 - SUBN Vx, Vy
+            -- Set Vx = Vy - Vx, set VF = NOT borrow.
+            -- If Vy > Vx, then VF is set to 1, otherwise 0. Then Vx is subtracted from Vy, and the results stored in Vx.
+            if (registers[y] > registers[x])
+                registers[0xF] := 1;
+            else
+                registers[0xF] := 0;
+            registers[x] := registers[y] - registers[x];
+        8xyE - SHL Vx , Vy
+            -- Set Vx = Vx SHL 1.
+            -- If the most-significant bit of Vx is 1, then VF is set to 1, otherwise to 0. Then Vx is multiplied by 2.
+            -- Save MSB in VF
+            registers[0xF] := (registers[x] & 0x80) >> 0x7;
+            registers[x] := registers[x] << 1;
+        9xy0 - SNE Vx, Vy
+            -- Skip next instruction if Vx != Vy.
+            if (registers[x] != registers[y])
+                program_counter := program_counter + 2;
+        Annn - LD I, addr
+            -- Set I = nnn.
+            index := nnn;
+        Bnnn - JP V0, addr
+            -- Jump to location nnn + V0.
+            program_counter := registers[0x0] + nnn;
+        Cxkk - RND Vx, byte
+            -- Set Vx = random byte AND kk.
+            registers[x] = random_byte & kk;
+        Dxyn - DRW Vx, Vy, nibble
+            -- Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.
+            natural_8 position_x := registers[x] % VIDEO_WIDTH;
+            natural_8 position_y := registers[y] % VIDEO_HEIGHT;
+            registers[0xF] := 0;
+            for (natural_8 row := 0; row < n; ++row)
+                natural_8 sprite_byte := memory[index + row];
+                for (natural_8 column := 0; column < 8; ++column)
+                    natural_8 sprite_pixel := sprite_byte & (0x80 >> column);
+                    natural_8 screen_pixel := video[(position_y + row) * VIDEO_WIDTH + (position_x + column)];
+                    if (sprite_pixel)
+                        if (screen_pixel == 0xFF)
+                            registers[0xF] := 1;
+                        screen_pixel := screen_pixel ^ 0xFF;
+        Ex9E - SKP Vx
+            -- Skip next instruction if key with the value of Vx is pressed.
+            if (keypad[registers[x]])
+                program_counter := program_counter + 2;
+        ExA1 - SKNP Vx
+            -- Skip next instruction if key with the value of Vx is not pressed.
+            if (!keypad[registers[x]])
+                program_counter := program_counter + 2;
+        Fx07 - LD Vx, DT
+            -- Set Vx = delay timer value.
+            registers[x] := delay_timer;
+        Fx0A - LD Vx, K
+            -- Wait for a key press, store the value of the key in Vx.
+            if (keypad[0])
+                registers[x] = 0;
+            else if (keypad[1])
+                registers[x] = 1;
+            else if (keypad[2])
+                registers[x] = 2;
+            else if (keypad[3])
+                registers[x] = 3;
+            else if (keypad[4])
+                registers[x] = 4;
+            else if (keypad[5])
+                registers[x] = 5;
+            else if (keypad[6])
+                registers[x] = 6;
+            else if (keypad[7])
+                registers[x] = 7;
+            else if (keypad[8])
+                registers[x] = 8;
+            else if (keypad[9])
+                registers[x] = 9;
+            else if (keypad[10])
+                registers[x] = 10;
+            else if (keypad[11])
+                registers[x] = 11;
+            else if (keypad[12])
+                registers[x] = 12;
+            else if (keypad[13])
+                registers[x] = 13;
+            else if (keypad[14])
+                registers[x] = 14;
+            else if (keypad[15])
+                registers[x] = 15;
+            else
+                program_counter := program_counter - 2;
+        Fx15 - LD DT, Vx
+            -- Set delay timer = Vx.
+            delay_timer := registers[x];
+        Fx18 - LD ST, Vx
+            -- Set sound timer = Vx.
+            sound_timer := registers[x];
+        Fx1E - ADD I, Vx
+            -- Set I = I + Vx.
+            index := index + registers[x];
+        Fx29 - LD F, Vx
+            -- Set I = location of sprite for digit Vx.
+            index := FONT_SET_START_ADDRESS + (5 * registers[x]);
+        Fx33 - LD B, Vx
+            -- Store BCD representation of Vx in memory locations I, I+1, and I+2.
+            -- The interpreter takes the decimal value of Vx, and places the hundreds digit in memory at location in I, the tens digit at location I+1, and the ones digit at location I+2.
+            memory[index + 2] = registers[x] % 10;
+            registers[x] := registers[x] / 10;
+            memory[index + 1] = registers[x] % 10;
+            registers[x] := registers[x] / 10;
+            memory[index] = registers[x] % 10;
+        Fx55 - LD [I], Vx
+            -- Store registers V0 through Vx in memory starting at location I.
+            for (natural_8 i = 0; i <= x; ++i)
+                memory[index + i] := registers[i];
+        Fx65 - LD Vx, [I]
+            -- Read registers V0 through Vx from memory starting at location I.
+            for (natural_8 i = 0; i <= x; ++i)
+		        registers[i] = memory[index + i];
+    fetch, decode, execute
+        opcode := (memory[program_counter] << 8) | memory[program_counter + 1];
+        program_counter := program_counter + 2;
+        -- Decode and Execute
+        -- Pattern matching or massive switch case statement for instructions.
+        if (delay_timer > 0)
+            delay_timer := delay_timer - 1;
+        if (sound_timer > 0)
+            sound_timer := sound_timer - 1;
+    platform layer
+        keypad
+        display
+        sound
+        gtkada
+        
+    main loop

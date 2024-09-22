@@ -1,0 +1,66 @@
+\doxysection{src/\+Chip8.cpp File Reference}
+\hypertarget{_chip8_8cpp}{}\label{_chip8_8cpp}\index{src/Chip8.cpp@{src/Chip8.cpp}}
+{\ttfamily \#include "{}../include/\+Chip8.\+hpp"{}}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$random$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr unsigned int \mbox{\hyperlink{_chip8_8cpp_a8b951627c4b83d3919fe446f1132d335}{FONTSET\+\_\+\+SIZE}} = 80
+\item 
+constexpr unsigned int \mbox{\hyperlink{_chip8_8cpp_a034a15b953e88ebdaef65755bb393561}{FONTSET\+\_\+\+START\+\_\+\+ADDRESS}} = 0x50
+\item 
+constexpr unsigned int \mbox{\hyperlink{_chip8_8cpp_aa69476c602090475442ce0e1055f82a8}{START\+\_\+\+ADDRESS}} = 0x200
+\item 
+std\+::array$<$ uint8\+\_\+t, \mbox{\hyperlink{_chip8_8cpp_a8b951627c4b83d3919fe446f1132d335}{FONTSET\+\_\+\+SIZE}} $>$ \mbox{\hyperlink{_chip8_8cpp_af40cca1608cd549c383bf1879988113d}{fontset}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{_chip8_8cpp_af40cca1608cd549c383bf1879988113d}\index{Chip8.cpp@{Chip8.cpp}!fontset@{fontset}}
+\index{fontset@{fontset}!Chip8.cpp@{Chip8.cpp}}
+\doxysubsubsection{\texorpdfstring{fontset}{fontset}}
+{\footnotesize\ttfamily \label{_chip8_8cpp_af40cca1608cd549c383bf1879988113d} 
+std\+::array$<$uint8\+\_\+t, \mbox{\hyperlink{_chip8_8cpp_a8b951627c4b83d3919fe446f1132d335}{FONTSET\+\_\+\+SIZE}}$>$ fontset}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ 0xF0,\ 0x90,\ 0x90,\ 0x90,\ 0xF0,\ }
+\DoxyCodeLine{\ \ \ \ 0x20,\ 0x60,\ 0x20,\ 0x20,\ 0x70,\ }
+\DoxyCodeLine{\ \ \ \ 0xF0,\ 0x10,\ 0xF0,\ 0x80,\ 0xF0,\ }
+\DoxyCodeLine{\ \ \ \ 0xF0,\ 0x10,\ 0xF0,\ 0x10,\ 0xF0,\ }
+\DoxyCodeLine{\ \ \ \ 0x90,\ 0x90,\ 0xF0,\ 0x10,\ 0x10,\ }
+\DoxyCodeLine{\ \ \ \ 0xF0,\ 0x80,\ 0xF0,\ 0x10,\ 0xF0,\ }
+\DoxyCodeLine{\ \ \ \ 0xF0,\ 0x80,\ 0xF0,\ 0x90,\ 0xF0,\ }
+\DoxyCodeLine{\ \ \ \ 0xF0,\ 0x10,\ 0x20,\ 0x40,\ 0x40,\ }
+\DoxyCodeLine{\ \ \ \ 0xF0,\ 0x90,\ 0xF0,\ 0x90,\ 0xF0,\ }
+\DoxyCodeLine{\ \ \ \ 0xF0,\ 0x90,\ 0xF0,\ 0x10,\ 0xF0,\ }
+\DoxyCodeLine{\ \ \ \ 0xF0,\ 0x90,\ 0xF0,\ 0x90,\ 0x90,\ }
+\DoxyCodeLine{\ \ \ \ 0xE0,\ 0x90,\ 0xE0,\ 0x90,\ 0xE0,\ }
+\DoxyCodeLine{\ \ \ \ 0xF0,\ 0x80,\ 0x80,\ 0x80,\ 0xF0,\ }
+\DoxyCodeLine{\ \ \ \ 0xE0,\ 0x90,\ 0x90,\ 0x90,\ 0xE0,\ }
+\DoxyCodeLine{\ \ \ \ 0xF0,\ 0x80,\ 0xF0,\ 0x80,\ 0xF0,\ }
+\DoxyCodeLine{\ \ \ \ 0xF0,\ 0x80,\ 0xF0,\ 0x80,\ 0x80\ \ }
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\Hypertarget{_chip8_8cpp_a8b951627c4b83d3919fe446f1132d335}\index{Chip8.cpp@{Chip8.cpp}!FONTSET\_SIZE@{FONTSET\_SIZE}}
+\index{FONTSET\_SIZE@{FONTSET\_SIZE}!Chip8.cpp@{Chip8.cpp}}
+\doxysubsubsection{\texorpdfstring{FONTSET\_SIZE}{FONTSET\_SIZE}}
+{\footnotesize\ttfamily \label{_chip8_8cpp_a8b951627c4b83d3919fe446f1132d335} 
+unsigned int FONTSET\+\_\+\+SIZE = 80\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\Hypertarget{_chip8_8cpp_a034a15b953e88ebdaef65755bb393561}\index{Chip8.cpp@{Chip8.cpp}!FONTSET\_START\_ADDRESS@{FONTSET\_START\_ADDRESS}}
+\index{FONTSET\_START\_ADDRESS@{FONTSET\_START\_ADDRESS}!Chip8.cpp@{Chip8.cpp}}
+\doxysubsubsection{\texorpdfstring{FONTSET\_START\_ADDRESS}{FONTSET\_START\_ADDRESS}}
+{\footnotesize\ttfamily \label{_chip8_8cpp_a034a15b953e88ebdaef65755bb393561} 
+unsigned int FONTSET\+\_\+\+START\+\_\+\+ADDRESS = 0x50\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\Hypertarget{_chip8_8cpp_aa69476c602090475442ce0e1055f82a8}\index{Chip8.cpp@{Chip8.cpp}!START\_ADDRESS@{START\_ADDRESS}}
+\index{START\_ADDRESS@{START\_ADDRESS}!Chip8.cpp@{Chip8.cpp}}
+\doxysubsubsection{\texorpdfstring{START\_ADDRESS}{START\_ADDRESS}}
+{\footnotesize\ttfamily \label{_chip8_8cpp_aa69476c602090475442ce0e1055f82a8} 
+unsigned int START\+\_\+\+ADDRESS = 0x200\hspace{0.3cm}{\ttfamily [constexpr]}}
+
